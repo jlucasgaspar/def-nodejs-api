@@ -9,7 +9,7 @@ interface IFieldsValidation {
 export const Validator = {
     ensureFieldsAreNotEmpty: ({ httpRequest, requiredFields }: IFieldsValidation): Error | undefined => {
         for (const field of requiredFields) {
-            if (typeof httpRequest.body[field] === 'object' && Object.keys(httpRequest.body[field]).length === 0) {
+            if (Object.keys(httpRequest.body[field]).length === 0 && httpRequest.body[field].constructor === Object) {
                 return new MissingParamError(field)
             }
 
