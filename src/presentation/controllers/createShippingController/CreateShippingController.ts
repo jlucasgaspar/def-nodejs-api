@@ -13,6 +13,12 @@ export class CreateShippingController implements IController {
             return HttpResponse.badRequest(errorEmptyField);
         }
 
+        const invalidDateError = Validator.ensureDateTypeIsValid(httpRequest.body.date);
+
+        if (invalidDateError) {
+            return HttpResponse.badRequest(invalidDateError);
+        }
+
         const { customerName, date, arrivalAddress, departureAddress } = httpRequest.body;
 
         return new Promise(res => res(null));
