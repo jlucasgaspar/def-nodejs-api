@@ -21,6 +21,10 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
             shippingData.departureAddress
         );
 
+        if (!arrivalAddressWithLatLng || !departureAddressWithLatLng) {
+            return null;
+        }
+
         const shipping = await this.shippingRepository.save({
             customerName: shippingData.customerName,
             date: shippingData.date,
@@ -28,6 +32,6 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
             departureAddress: departureAddressWithLatLng
         })
 
-        return null;
+        return shipping;
     } 
 }
