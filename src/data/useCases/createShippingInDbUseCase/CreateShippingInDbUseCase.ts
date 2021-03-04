@@ -10,10 +10,10 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
     }
 
     public async execute(shippingData: IShippingRequest): Promise<IShipping> {
-        const arrivalAddressWithLatLng = this.geocodeConverter.addressToLatLng(shippingData.arrivalAddress);
+        const arrivalAddressWithLatLng = await this.geocodeConverter.addressToLatLng(shippingData.arrivalAddress);
 
-        const departureAddressWithLatLng = this.geocodeConverter.addressToLatLng(shippingData.departureAddress);
-        
-        return new Promise(res => res(null));
+        const departureAddressWithLatLng = await this.geocodeConverter.addressToLatLng(shippingData.departureAddress);
+
+        return null;
     } 
 }
