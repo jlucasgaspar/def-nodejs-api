@@ -1,6 +1,8 @@
+import { FakeShippingRepository } from './../../../infra/repositories/ShippingRepository/fakes/FakeShippingRepository';
 import { CreateShippingInDbUseCase } from './CreateShippingInDbUseCase';
 import { FakeGeocodeConverter } from './../../../infra/geocode/fakes/FakeGeocodeConverter';
 
+let fakeShippingRepository: FakeShippingRepository;
 let fakeGeocodeConverter: FakeGeocodeConverter;
 let createShippingInDbUseCase: CreateShippingInDbUseCase;
 
@@ -27,8 +29,13 @@ const fakeRequest = {
 
 describe('CreateShippingInDb UseCase', () => {
     beforeEach(() => {
+        fakeShippingRepository = new FakeShippingRepository();
         fakeGeocodeConverter = new FakeGeocodeConverter();
-        createShippingInDbUseCase = new CreateShippingInDbUseCase(fakeGeocodeConverter);
+
+        createShippingInDbUseCase = new CreateShippingInDbUseCase(
+            fakeGeocodeConverter,
+            fakeShippingRepository
+        );
     });
 
     test('should call GeocodeConverter with correct values', async () => {
@@ -51,4 +58,12 @@ describe('CreateShippingInDb UseCase', () => {
         const responseNull = await createShippingInDbUseCase.execute(fakeRequest);
         expect(responseNull).toBeNull();
     });
+
+    test('should call ShippingRepository with correct values', async () => {
+        const shippingRepositorySpy = jest.spyOn(fakeShippingRepository, 'save');
+        await createShippingInDbUseCase.execute(fakeRequest);
+        expect(shippingRepositorySpy).toHaveBeenCalledWith(fakeRequest);
+    });
+
+    
 });
