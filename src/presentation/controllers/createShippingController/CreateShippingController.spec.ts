@@ -12,4 +12,9 @@ describe('CreateShipping Controller', () => {
         const response = await sut_createShippingController.handle(fakeRequest.noCustomerName);
         expect(response.statusCode).toBe(400);
     });
+
+    test('should return 400 if no date is provided', async () => {
+        const response = await sut_createShippingController.handle(fakeRequest.noDate);
+        expect(response.statusCode).toBe(400);
+    });
 });
