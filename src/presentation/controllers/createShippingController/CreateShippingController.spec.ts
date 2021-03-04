@@ -56,4 +56,19 @@ describe('CreateShipping Controller', () => {
         await sut_createShippingController.handle(fakeRequest.valid);
         expect(fakeCreateShippingUseCasepy).toHaveBeenCalledWith(fakeRequest.valid.body);
     });
+
+    test('should return 500 if CreateShippingInDbUseCase throws', async () => {
+        jest.spyOn(fakeCreateShippingInDbUseCase, 'execute').mockReturnValueOnce(
+            new Promise((res, reject) => reject(new Error()))
+        );
+        const response = await sut_createShippingController.handle(fakeRequest.valid);
+        expect(response.statusCode).toBe(500);
+    });
+
+    test('should return 200 if valid params are provided', async () => {
+        const shipping = await sut_createShippingController.handle(
+            fakeRequest.valid
+        );
+        expect(shipping.statusCode).toBe(200);
+    });
 });
