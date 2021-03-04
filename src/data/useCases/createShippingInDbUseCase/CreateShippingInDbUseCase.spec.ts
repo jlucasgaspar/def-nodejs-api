@@ -65,5 +65,11 @@ describe('CreateShippingInDb UseCase', () => {
         expect(shippingRepositorySpy).toHaveBeenCalledWith(fakeRequest);
     });
 
-    
+    test('should throw if GeocodeConverter throws', async () => {
+        jest.spyOn(fakeShippingRepository, 'save').mockImplementationOnce(() =>
+            new Promise((res, reject) => reject(new Error()))
+        );
+        const error = createShippingInDbUseCase.execute(fakeRequest);
+        await expect(error).rejects.toThrow();
+    });
 });
