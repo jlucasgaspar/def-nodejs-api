@@ -78,4 +78,9 @@ describe('CreateShippingInDb UseCase', () => {
         const responseNull = await createShippingInDbUseCase.execute(fakeRequest);
         expect(responseNull).toBeNull();
     });
+
+    test('should return a shipping on success', async () => {
+        const shipping = await createShippingInDbUseCase.execute(fakeRequest);
+        expect(shipping.id).toBeTruthy();
+    });
 });
