@@ -34,11 +34,11 @@ export class CreateShippingController implements IController {
                 date: date,
                 arrivalAddress: arrivalAddress,
                 departureAddress: departureAddress
-            })
+            });
 
             return HttpResponse.ok(shipping);
         } catch (error) {
-            return HttpResponse.serverError()
+            return HttpResponse.serverError();
         }
     }
 }

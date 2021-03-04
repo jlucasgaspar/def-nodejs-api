@@ -17,6 +17,9 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
             shippingData.arrivalAddress
         );
 
+        // FIXME: Nesses 2 pode ter algum erro do provider (Google)... Posso fazer
+        // um tratamento de erro melhorado.
+
         const departureAddressWithLatLng = await this.geocodeConverter.addressToLatLng(
             shippingData.departureAddress
         );
@@ -30,7 +33,7 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
             date: shippingData.date,
             arrivalAddress: arrivalAddressWithLatLng,
             departureAddress: departureAddressWithLatLng
-        })
+        });
 
         return shipping;
     } 
