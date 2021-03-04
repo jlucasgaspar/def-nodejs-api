@@ -7,7 +7,7 @@ export interface IAddress {
     state: string;
 }
 
-export interface ILatLng {
+export interface IAddressWithLatLng extends IAddress {
     lat: number;
     lng: number;
 }
@@ -16,8 +16,6 @@ export interface IShipping {
     id: string;
     customerName: string;
     date: Date;
-    departureAddress: IAddress;
-    arrivalAddress: IAddress;
-    arrivalAddressLatLng: ILatLng;
-    departureAddressLatLng: ILatLng;
+    departureAddress: IAddressWithLatLng;
+    arrivalAddress: IAddressWithLatLng;
 }
