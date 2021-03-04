@@ -1,5 +1,5 @@
-import { FakeGeocodeConverter } from './../../../infra/geocode/fakes/FakeGeocodeConverter';
 import { CreateShippingInDbUseCase } from './CreateShippingInDbUseCase';
+import { FakeGeocodeConverter } from './../../../infra/geocode/fakes/FakeGeocodeConverter';
 
 let fakeGeocodeConverter: FakeGeocodeConverter;
 let createShippingInDbUseCase: CreateShippingInDbUseCase;
@@ -36,5 +36,13 @@ describe('CreateShippingInDb UseCase', () => {
         await createShippingInDbUseCase.execute(fakeRequest);
         expect(geocodeSpy).toHaveBeenCalledWith(fakeRequest.arrivalAddress);
         expect(geocodeSpy).toHaveBeenCalledWith(fakeRequest.departureAddress);
+    });
+
+    test('should throw if GeocodeConverter throws', async () => {
+        jest.spyOn(fakeGeocodeConverter, 'addressToLatLng').mockImplementationOnce(() =>
+            new Promise((res, reject) => reject(new Error()))
+        );
+        const error = createShippingInDbUseCase.execute(fakeRequest);
+        await expect(error).rejects.toThrow();
     });
 });
