@@ -13,20 +13,30 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
     }
 
     public async execute(shippingData: IShippingRequest): Promise<IShipping> {
-        const arrivalAddressWithLatLng = await this.geocodeConverter.addressToLatLng(
+        const arrivalAddressLatLng = await this.geocodeConverter.addressToLatLng(
             shippingData.arrivalAddress
         );
+
+        const departureAddressLatLng = await this.geocodeConverter.addressToLatLng(
+            shippingData.departureAddress
+        );
+
+        if (!arrivalAddressLatLng || !departureAddressLatLng) {
+            return null;
+        }
 
         // FIXME: Nesses 2 pode ter algum erro do provider (Google)... Posso fazer
         // um tratamento de erro melhorado.
 
-        const departureAddressWithLatLng = await this.geocodeConverter.addressToLatLng(
-            shippingData.departureAddress
-        );
+        const arrivalAddressWithLatLng = Object.assign({}, shippingData.arrivalAddress, {
+            lat: arrivalAddressLatLng.lat,
+            lng: arrivalAddressLatLng.lng
+        })
 
-        if (!arrivalAddressWithLatLng || !departureAddressWithLatLng) {
-            return null;
-        }
+        const departureAddressWithLatLng = Object.assign({}, shippingData.departureAddress, {
+            lat: departureAddressLatLng.lat,
+            lng: departureAddressLatLng.lng
+        })
 
         const shipping = await this.shippingRepository.save({
             customerName: shippingData.customerName,
