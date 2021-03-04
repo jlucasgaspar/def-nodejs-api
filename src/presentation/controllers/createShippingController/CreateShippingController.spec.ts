@@ -22,4 +22,9 @@ describe('CreateShipping Controller', () => {
         const response = await sut_createShippingController.handle(fakeRequest.dateIsNotValidDateType);
         expect(response.statusCode).toBe(400);
     });
+
+    test('should return 400 if no arrivalAdress is provided', async () => {
+        const response = await sut_createShippingController.handle(fakeRequest.noArrivalAddress);
+        expect(response.statusCode).toBe(400);
+    });
 });
