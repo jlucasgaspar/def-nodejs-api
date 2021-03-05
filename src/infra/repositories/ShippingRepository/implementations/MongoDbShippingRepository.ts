@@ -20,6 +20,8 @@ export class MongoDbShippingRepository implements IShippingRepository {
 
         const shippings = await shippingCollection.find({}).toArray();
 
-        return shippings;
+        const shippingsArrayWithCorrectId = MongoHelper.arrayMap(shippings);
+
+        return shippingsArrayWithCorrectId;
     }
 }

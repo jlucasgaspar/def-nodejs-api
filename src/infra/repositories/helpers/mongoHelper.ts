@@ -33,5 +33,19 @@ export const MongoHelper = {
         const { _id, ...collectionWithout_id } = collection;
     
         return Object.assign({}, collectionWithout_id, { id: _id });
+    },
+
+    arrayMap(array: any[]): any[] {
+        const arrayWithout_id = [];
+
+        array.map(doc => {
+            const { _id, ...docWithout_id } = doc;
+
+            const newDoc = docWithout_id;
+
+            arrayWithout_id.push(newDoc);
+        })
+
+        return arrayWithout_id;
     }
 }
