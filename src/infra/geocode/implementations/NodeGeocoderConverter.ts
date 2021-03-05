@@ -18,11 +18,11 @@ export class NodeGeocoderConverter implements IGeocode {
 
         const response = await geocoder.geocode(completeAddress);
 
-        const addressResponse = response[0];
-
-        if (!addressResponse) {
+        if (!response) {
             return null;
         }
+        
+        const addressResponse = response[0];
 
         return {
             lat: addressResponse.latitude,
