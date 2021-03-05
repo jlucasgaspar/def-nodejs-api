@@ -2,7 +2,7 @@ import { IShipping } from '../../../../domain/models/IShipping';
 import { ICollection, MongoHelper } from '../../helpers/mongoHelper';
 import { MongoDbShippingRepository } from './MongoDbShippingRepository';
 
-let accountCollection: ICollection;
+let shippingCollection: ICollection;
 let sut_mongoDbShippingRepository: MongoDbShippingRepository;
 
 const fakeRequest: Omit<IShipping, 'id'> = {
@@ -32,6 +32,7 @@ const fakeRequest: Omit<IShipping, 'id'> = {
 
 describe('MongoDbShipping Repository', () => {
     beforeAll(async () => {
+        sut_mongoDbShippingRepository = new MongoDbShippingRepository();
         await MongoHelper.connect(process.env.MONGO_URL);
     });
 
@@ -40,15 +41,38 @@ describe('MongoDbShipping Repository', () => {
     });
 
     beforeEach(async () => {
-        sut_mongoDbShippingRepository = new MongoDbShippingRepository();
-
-        accountCollection = await MongoHelper.getCollection('accounts');
-        await accountCollection.deleteMany({});
+        shippingCollection = await MongoHelper.getCollection('shippings');
+        await shippingCollection.deleteMany({});
     });
 
     test('should return a shipping on save success', async () => {
-        const account = await sut_mongoDbShippingRepository.save(fakeRequest);
-        expect(account.id).toBeTruthy();
-        expect(account.customerName).toBe(fakeRequest.customerName);
+        const shipping = await sut_mongoDbShippingRepository.save(fakeRequest);
+        expect(shipping.id).toBeTruthy();
+        expect(shipping.customerName).toBe(fakeRequest.customerName);
     });
+
+    test('should null if save returns null', async () => {
+        jest.spyOn(sut_mongoDbShippingRepository, 'save').mockReturnValueOnce(null);
+        const nullResponse = await sut_mongoDbShippingRepository.save(fakeRequest);
+        expect(nullResponse).toBeNull();
+    });
+
+    test('should return an array of shipping on listAll success', async () => {
+        const result = await shippingCollection.insertOne(fakeRequest);
+        const shipping = result.ops[0];
+
+        const shippingsArray = await shippingCollection.find({}).toArray();
+
+        expect(shippingsArray).toBeTruthy();
+        expect(shippingsArray).toEqual([shipping]);
+    });
+
+    test('should return an empty array of shipping on listAll if no shipping is saved', async () => {
+        //const result = await shippingCollection.insertOne(fakeRequest);
+        //const shipping = result.ops[0];
+        const shippingsArray = await shippingCollection.find({}).toArray();
+        expect(shippingsArray).toBeTruthy();
+        expect(shippingsArray).toEqual([]);
+    });
+    
 });
