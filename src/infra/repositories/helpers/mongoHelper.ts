@@ -41,7 +41,7 @@ export const MongoHelper = {
         array.map(doc => {
             const { _id, ...docWithout_id } = doc;
 
-            const newDoc = docWithout_id;
+            const newDoc = Object.assign({}, docWithout_id, { id: _id });
 
             arrayWithout_id.push(newDoc);
         })
