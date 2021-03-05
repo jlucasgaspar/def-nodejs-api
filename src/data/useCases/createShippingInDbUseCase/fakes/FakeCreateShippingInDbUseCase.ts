@@ -1,10 +1,12 @@
 import { ICreateShippingUseCase, IShippingRequest } from '../../../../domain/useCases/ICreateShipping';
 import { IShipping } from '../../../../domain/models/IShipping';
+import { IShippingRepository } from '../../../protocols/repositories/IShippingRepository';
 
 export class FakeCreateShippingInDbUseCase implements ICreateShippingUseCase {
+    constructor(private readonly shippingRepository: IShippingRepository) {}
+
     public async execute(shippingData: IShippingRequest): Promise<IShipping> {
-        const fakeShippingFromDb = Object.assign({}, shippingData, {
-            id: 'valid_id',
+        const fakeShippingWithoutId = Object.assign({}, shippingData, {
             arrivalAddress: {
                 street: shippingData.arrivalAddress.street,
                 number: shippingData.arrivalAddress.number,
@@ -27,6 +29,8 @@ export class FakeCreateShippingInDbUseCase implements ICreateShippingUseCase {
             }
         });
 
-        return new Promise(resolve => resolve(fakeShippingFromDb));
+        const fakeShippingWithId = this.shippingRepository.save(fakeShippingWithoutId);
+
+        return new Promise(resolve => resolve(fakeShippingWithId));
     } 
 }

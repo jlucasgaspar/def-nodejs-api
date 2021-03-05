@@ -1,13 +1,16 @@
+import { FakeShippingRepository } from './../../../infra/repositories/ShippingRepository/fakes/FakeShippingRepository';
 import { CreateShippingController } from './CreateShippingController';
 import { fakeRequest } from './constants/fakeRequest';
 import { FakeCreateShippingInDbUseCase } from './../../../data/useCases/createShippingInDbUseCase/fakes/FakeCreateShippingInDbUseCase';
 
+let fakeShippingRepository: FakeShippingRepository;
 let fakeCreateShippingInDbUseCase: FakeCreateShippingInDbUseCase;
 let sut_createShippingController: CreateShippingController;
 
 describe('CreateShipping Controller', () => {
     beforeEach(() => {
-        fakeCreateShippingInDbUseCase = new FakeCreateShippingInDbUseCase()
+        fakeShippingRepository = new FakeShippingRepository();
+        fakeCreateShippingInDbUseCase = new FakeCreateShippingInDbUseCase(fakeShippingRepository);
 
         sut_createShippingController = new CreateShippingController(
             fakeCreateShippingInDbUseCase
