@@ -21,4 +21,12 @@ describe('NodeGeocoder Converter', () => {
         expect(lat).toBeTruthy();
         expect(lng).toBeTruthy();
     });
+
+    test('should return null if addressToLatLng returns null', async () => {
+        jest.spyOn(sut_nodeGeocodeConverter, 'addressToLatLng').mockImplementationOnce(async () =>
+            new Promise(resolve => resolve(null))
+        );
+        const responseError = await sut_nodeGeocodeConverter.addressToLatLng(fakeAddress);
+        expect(responseError).toBeNull();
+    });
 });
