@@ -21,11 +21,10 @@ export class CreateShippingController implements IController {
                 return HttpResponse.badRequest(errorEmptyField);
             }
 
-            const invalidDateError = Validator.ensureDateTypeIsValid(httpRequest.body.date);
-
+            /* const invalidDateError = Validator.ensureDateTypeIsValid(httpRequest.body.date);
             if (invalidDateError) {
                 return HttpResponse.badRequest(invalidDateError);
-            }
+            } */
 
             const { customerName, date, arrivalAddress, departureAddress } = httpRequest.body;
 
@@ -35,6 +34,8 @@ export class CreateShippingController implements IController {
                 arrivalAddress: arrivalAddress,
                 departureAddress: departureAddress
             });
+
+            console.log(shipping);
 
             return HttpResponse.ok(shipping);
         } catch (error) {

@@ -25,9 +25,6 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
             return null;
         }
 
-        // FIXME: Nesses 2 pode ter algum erro do provider (Google)... Posso fazer
-        // um tratamento de erro melhorado.
-
         const arrivalAddressWithLatLng = Object.assign({}, shippingData.arrivalAddress, {
             lat: arrivalAddressLatLng.lat,
             lng: arrivalAddressLatLng.lng
