@@ -8,10 +8,6 @@ export class ListAllShippingsInDbUseCase implements IListAllShippingsUseCase {
     public async execute(): Promise<IShipping[]> {
         const shippings = await this.shippingRepository.listAll();
 
-        if (!shippings) {
-            return null;
-        }
-
         return shippings;
     } 
 }
