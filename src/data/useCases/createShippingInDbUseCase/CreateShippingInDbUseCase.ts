@@ -31,12 +31,12 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
         const arrivalAddressWithLatLng = Object.assign({}, shippingData.arrivalAddress, {
             lat: arrivalAddressLatLng.lat,
             lng: arrivalAddressLatLng.lng
-        })
+        });
 
         const departureAddressWithLatLng = Object.assign({}, shippingData.departureAddress, {
             lat: departureAddressLatLng.lat,
             lng: departureAddressLatLng.lng
-        })
+        });
 
         const shipping = await this.shippingRepository.save({
             customerName: shippingData.customerName,
