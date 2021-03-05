@@ -29,4 +29,10 @@ describe('NodeGeocoder Converter', () => {
         const responseError = await sut_nodeGeocodeConverter.addressToLatLng(fakeAddress);
         expect(responseError).toBeNull();
     });
+
+    test('should call addressToLatLng with correct values', async () => {
+        const latLngSpy = jest.spyOn(sut_nodeGeocodeConverter, 'addressToLatLng');
+        await sut_nodeGeocodeConverter.addressToLatLng(fakeAddress);
+        expect(latLngSpy).toHaveBeenCalledWith(fakeAddress);
+    });
 });
