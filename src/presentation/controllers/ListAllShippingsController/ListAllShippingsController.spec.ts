@@ -42,11 +42,26 @@ describe('CreateShipping Controller', () => {
         );
     });
 
-    test('should return an array of shippings on success', async () => {
+    test('should return 200 and an array of shippings on success', async () => {
         await fakeShippingRepository.save(fakeRequest);
         const shippingsList = await sut_listAllShippingsController.handle();
         expect(shippingsList.body).toHaveLength(1);
         expect(shippingsList.body).toEqual([{ ...fakeRequest, id: 'valid_id' }]);
+        expect(shippingsList.statusCode).toBe(200);
     });
     
+    test('should return 200 and an empty array if there are no shippings', async () => {
+        const shippingsList = await sut_listAllShippingsController.handle();
+        expect(shippingsList.body).toHaveLength(0);
+        expect(shippingsList.body).toEqual([]);
+        expect(shippingsList.statusCode).toBe(200);
+    });
+
+    test('should throw if LisAllShippingsUseCase throws', async () => {
+        jest.spyOn(listAllShippingsInDbUseCase, 'execute').mockReturnValueOnce(
+            new Promise((res, reject) => reject(new Error()))
+        );
+        const shippingsList = await sut_listAllShippingsController.handle();
+        expect(shippingsList.statusCode).toBe(500);
+    });
 });
