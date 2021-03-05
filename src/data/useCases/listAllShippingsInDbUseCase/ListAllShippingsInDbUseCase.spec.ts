@@ -45,4 +45,10 @@ describe('ListAllShippingsInDb UseCase', () => {
         expect(shippingsList).toHaveLength(1);
         expect(shippingsList).toEqual([{ ...fakeRequest, id: 'valid_id' }])
     });
+
+    test('should return an empty array if ShippingRepository returns empty', async () => {
+        const shippingsList = await sut_listAllShippingsInDbUseCase.execute();
+        expect(shippingsList).toHaveLength(0);
+        expect(shippingsList).toEqual([]);
+    });
 });
