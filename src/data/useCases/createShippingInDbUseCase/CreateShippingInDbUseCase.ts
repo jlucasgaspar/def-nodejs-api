@@ -37,7 +37,7 @@ export class CreateShippingInDbUseCase implements ICreateShippingUseCase {
 
         const shipping = await this.shippingRepository.save({
             customerName: shippingData.customerName,
-            date: shippingData.date,
+            date: new Date(shippingData.date),
             arrivalAddress: arrivalAddressWithLatLng,
             departureAddress: departureAddressWithLatLng
         });
