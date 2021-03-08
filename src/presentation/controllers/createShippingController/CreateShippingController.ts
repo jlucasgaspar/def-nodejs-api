@@ -35,8 +35,6 @@ export class CreateShippingController implements IController {
                 departureAddress: departureAddress
             });
 
-            console.log(shipping);
-
             return HttpResponse.ok(shipping);
         } catch (error) {
             return HttpResponse.serverError();

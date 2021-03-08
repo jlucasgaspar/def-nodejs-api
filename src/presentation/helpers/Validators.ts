@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError } from '../errors';
+import { MissingParamError } from '../errors';
 import { IHttpRequest } from '../protocols';
 
 interface IFieldsValidation {
@@ -16,14 +16,6 @@ export const Validator = {
             if (!httpRequest.body[field]) {
                 return new MissingParamError(field)
             }
-        }
-    },
-
-    ensureDateTypeIsValid(date: any): Error | undefined {
-        const isDateValid = date instanceof Date ? true : false
-
-        if (!isDateValid) {
-            return new InvalidParamError(date);
         }
     }
 }

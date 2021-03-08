@@ -1,9 +1,9 @@
+import { FakeListAllShippingsInDbUseCase } from '../../../data/useCases/listAllShippingsInDbUseCase/fakes/FakeListAllShippingsInDbUseCase';
 import { IShipping } from '../../../domain/models/IShipping';
-import { ListAllShippingsInDbUseCase } from './../../../data/useCases/listAllShippingsInDbUseCase/ListAllShippingsInDbUseCase';
 import { FakeShippingRepository } from './../../../infra/repositories/ShippingRepository/fakes/FakeShippingRepository';
 import { ListAllShippingsController } from './ListAllShippingsController';
 
-let listAllShippingsInDbUseCase: ListAllShippingsInDbUseCase;
+let fakeListAllShippingsInDbUseCase: FakeListAllShippingsInDbUseCase;
 let fakeShippingRepository: FakeShippingRepository;
 let sut_listAllShippingsController: ListAllShippingsController;
 
@@ -35,10 +35,10 @@ const fakeRequest: Omit<IShipping, 'id'> = {
 describe('CreateShipping Controller', () => {
     beforeEach(() => {
         fakeShippingRepository = new FakeShippingRepository();
-        listAllShippingsInDbUseCase = new ListAllShippingsInDbUseCase(fakeShippingRepository);
+        fakeListAllShippingsInDbUseCase = new FakeListAllShippingsInDbUseCase(fakeShippingRepository);
         
         sut_listAllShippingsController = new ListAllShippingsController(
-            listAllShippingsInDbUseCase
+            fakeListAllShippingsInDbUseCase
         );
     });
 
@@ -58,7 +58,7 @@ describe('CreateShipping Controller', () => {
     });
 
     test('should throw if LisAllShippingsUseCase throws', async () => {
-        jest.spyOn(listAllShippingsInDbUseCase, 'execute').mockReturnValueOnce(
+        jest.spyOn(fakeListAllShippingsInDbUseCase, 'execute').mockReturnValueOnce(
             new Promise((res, reject) => reject(new Error()))
         );
         const shippingsList = await sut_listAllShippingsController.handle();

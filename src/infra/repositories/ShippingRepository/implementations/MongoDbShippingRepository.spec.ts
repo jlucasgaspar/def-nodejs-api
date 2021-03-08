@@ -61,10 +61,10 @@ describe('MongoDbShipping Repository', () => {
         const result = await shippingCollection.insertOne(fakeRequest);
         const shipping = result.ops[0];
 
-        const shippingsArray = await shippingCollection.find({}).toArray();
+        const shippingsArray = await sut_mongoDbShippingRepository.listAll();
 
         expect(shippingsArray).toBeTruthy();
-        expect(shippingsArray).toEqual([shipping]);
+        expect(shippingsArray).toHaveLength(1);
     });
 
     test('should return an empty array of shipping on listAll if no shipping is saved', async () => {

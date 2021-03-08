@@ -1,6 +1,7 @@
 import { IExpress } from '../protocols/IExpress';
-import { bodyParser } from '../middlewares';
+import { bodyParser, cors } from '../middlewares';
 
 export const setupMiddlewares = (app: IExpress): void => {
+    app.use(cors);
     app.use(bodyParser);
 }
